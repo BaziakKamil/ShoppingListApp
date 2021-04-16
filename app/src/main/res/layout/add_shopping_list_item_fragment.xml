@@ -18,7 +18,7 @@
             android:id="@+id/edit_text_task_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Item to buy name"
+            android:hint="@string/itemToBuyName_text"
             android:inputType="text"
             android:maxLines="2"
             android:textSize="@dimen/text_size_normal" />
@@ -34,7 +34,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_weight="1"
-                android:text="Quantity"
+                android:text="@string/quantity_text"
                 android:textSize="@dimen/text_size_normal"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

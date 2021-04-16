@@ -1,8 +1,11 @@
 package pl.kamilbaziak.shoppinglist.ui.fragmentshoppinglist
 
 import android.content.Context
+import android.os.Build
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +33,7 @@ class ShoppingListAdapter(private val listener: OnItemClickListener, private val
         init {
             bidining.apply {
                 root.setOnClickListener{
-                    val position = adapterPosition // getting position
+                    val position = adapterPosition
                     if(position != RecyclerView.NO_POSITION)
                     {
                         val shoppingList = getItem(position)

@@ -24,6 +24,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:contentDescription="@string/button_to_add_new_items_to_shopping_list" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

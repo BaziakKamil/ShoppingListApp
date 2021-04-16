@@ -4,7 +4,6 @@
     <string name="delete_string">Delete</string>
     <string name="quantity_with_argument">x%1$s</string>
     <string name="done_text">Done</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="giveNewShoppingListName">Give new shopping list a name</string>
     <string name="enterName">Enter name</string>
@@ -13,4 +12,10 @@
     <string name="enterItemName">Enter item name</string>
     <string name="quantity">Quantity:</string>
     <string name="enterQuantity">Enter quantity</string>
+    <string name="shoppingListText">Shopping lists</string>
+    <string name="completedListText">Completed lists</string>
+    <string name="quantity_text">Quantity</string>
+    <string name="itemToBuyName_text">Item to buy name</string>
+    <string name="button_to_add_new_shopping_list">Button to add new shopping list</string>
+    <string name="button_to_add_new_items_to_shopping_list">Button to add new items to shopping list</string>
 </resources>

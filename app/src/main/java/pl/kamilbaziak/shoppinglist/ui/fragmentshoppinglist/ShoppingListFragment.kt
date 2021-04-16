@@ -69,8 +69,6 @@ class ShoppingListFragment : Fragment(R.layout.fragment_shopping_list),
             }
         }
 
-        //TODO long click for deletion
-
         //adding list to adapter
         viewModel.shoppingList.observe(viewLifecycleOwner){
             shoppingListAdapter.submitList(it)

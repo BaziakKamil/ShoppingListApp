@@ -48,8 +48,8 @@ public class MainTabbedFragment extends Fragment {
         adapter = new ViewPagerAdapter(fm, getLifecycle());
         viewPager.setAdapter(adapter);
 
-        tabLayout.addTab(tabLayout.newTab().setText("Shopping"));
-        tabLayout.addTab(tabLayout.newTab().setText("Completed"));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.shoppingListText).setIcon(R.drawable.ic_shopping_list));
+        tabLayout.addTab(tabLayout.newTab().setText(R.string.completedListText).setIcon(R.drawable.ic_archived_list));
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -67,7 +67,6 @@ public class MainTabbedFragment extends Fragment {
 
             }
         });
-
 
         viewPager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
