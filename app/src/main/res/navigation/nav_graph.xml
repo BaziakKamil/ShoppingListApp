@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainTabbedFragment">
+
+    <fragment
+        android:id="@+id/fragmentShoppingItemsList"
+        android:name="pl.kamilbaziak.shoppinglist.ui.fragmentshoppinglistitemlist.ShoppingListItemListFragment"
+        android:label="{title}"
+        tools:layout="@layout/fragment_shopping_list_item_list">
+        <argument
+            android:name="shoppingListModel"
+            app:argType="pl.kamilbaziak.shoppinglist.model.ShoppingListModel" />
+        <argument
+            android:name="title"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_fragmentShoppingItemsList_to_mainTabbedFragment"
+            app:destination="@id/mainTabbedFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mainTabbedFragment"
+        android:name="pl.kamilbaziak.shoppinglist.ui.maintabbedfragment.MainTabbedFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_main_tabbed" >
+        <action
+            android:id="@+id/action_mainTabbedFragment_to_fragmentShoppingItemsList2"
+            app:destination="@id/fragmentShoppingItemsList" />
+    </fragment>
+
+</navigation>

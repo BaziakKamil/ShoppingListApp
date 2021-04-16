@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Shopping List App</string>
+    <string name="created_text_with_argument">Created: %1$s</string>
+    <string name="delete_string">Delete</string>
+    <string name="quantity_with_argument">x%1$s</string>
+    <string name="done_text">Done</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="giveNewShoppingListName">Give new shopping list a name</string>
+    <string name="enterName">Enter name</string>
+    <string name="ok_text">OK</string>
+    <string name="cancel_text">Cancel</string>
+    <string name="enterItemName">Enter item name</string>
+    <string name="quantity">Quantity:</string>
+    <string name="enterQuantity">Enter quantity</string>
+</resources>
