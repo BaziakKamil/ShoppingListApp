@@ -11,11 +11,8 @@ import android.widget.EditText
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.view.MenuItemCompat
-import androidx.core.view.marginStart
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -95,19 +92,28 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
                     }
 
                     is ShoppingListItemListViewModel.ShoppingListItemListEvent.ShowUndoDeleteTaskMessage -> {
-                        Snackbar.make(requireView(), "Shoppping list item deleted", Snackbar.LENGTH_LONG)
-                            .setAction("UNDO"){
+                        Snackbar.make(
+                            requireView(),
+                            "Shoppping list item deleted",
+                            Snackbar.LENGTH_LONG
+                        )
+                            .setAction("UNDO") {
                                 viewModel.onUndoDeleteClick(event.shoppingListItemModel)
                             }.show()
                     }
 
                     ShoppingListItemListViewModel.ShoppingListItemListEvent.ShoppingListIsCompletedCloseDialog -> {
-                        val action = ShoppingListItemListFragmentDirections.actionFragmentShoppingItemsListToMainTabbedFragment()
+                        val action =
+                            ShoppingListItemListFragmentDirections.actionFragmentShoppingItemsListToMainTabbedFragment()
                         findNavController().navigate(action)
                     }
 
                     is ShoppingListItemListViewModel.ShoppingListItemListEvent.ErrorChangingQuantityToInt -> {
-                        Snackbar.make(requireView(), "Quantity is wrong, please correct it", Snackbar.LENGTH_LONG).show()
+                        Snackbar.make(
+                            requireView(),
+                            "Quantity is wrong, please correct it",
+                            Snackbar.LENGTH_LONG
+                        ).show()
                     }
                 }
             }
@@ -143,11 +149,15 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
         layout.addView(quantityLayout)
 
         builder.setView(layout)
-        builder.setPositiveButton(getString(R.string.ok_text), DialogInterface.OnClickListener { dialog, which ->
-            viewModel.addNewItem(nameEditText.text.toString(), quantityEditText.text.toString())
-            dialog.dismiss()
-        })
-        builder.setNegativeButton(getString(R.string.cancel_text), DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
+        builder.setPositiveButton(
+            getString(R.string.ok_text),
+            DialogInterface.OnClickListener { dialog, which ->
+                viewModel.addNewItem(nameEditText.text.toString(), quantityEditText.text.toString())
+                dialog.dismiss()
+            })
+        builder.setNegativeButton(
+            getString(R.string.cancel_text),
+            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
 
         builder.show()
     }
@@ -160,7 +170,7 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.done_menu_button -> {
-                viewModel.setShoppingListAsCompleted()
+                buildCompleteListAlertDialog()
                 true
             }
 
@@ -170,5 +180,19 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
 
     override fun onCheckBoxClick(shoppingListItemModel: ShoppingListItemModel, isChecked: Boolean) {
         viewModel.onShoppingItemCheckedChanged(shoppingListItemModel, isChecked)
+    }
+
+    private fun buildCompleteListAlertDialog(){
+        val title = getString(R.string.completeDialogTitle)
+        val message = getString(R.string.completeDialogMessage1) + "\n" + getString(R.string.completeDialogMessage2)
+        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
+       builder
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.yes ) { dialog, which ->
+                viewModel.setShoppingListAsCompleted()
+            } // A null listener allows the button to dismiss the dialog and take no further action.
+            .setNegativeButton(android.R.string.no, null)
+            .show()
     }
 }

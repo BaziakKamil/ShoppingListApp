@@ -17,6 +17,6 @@ data class ShoppingListModel(
 ): Parcelable{
 
     val createdDateFormatted: String
-        get() = DateFormat.getTimeInstance().format(created)
+        get() = DateFormat.getDateTimeInstance().format(created)
 
 }

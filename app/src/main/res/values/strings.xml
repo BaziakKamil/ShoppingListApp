@@ -2,7 +2,7 @@
     <string name="app_name">Shopping List App</string>
     <string name="created_text_with_argument">Created: %1$s</string>
     <string name="delete_string">Delete</string>
-    <string name="quantity_with_argument">x%1$s</string>
+    <string name="quantity_with_argument">x %1$s</string>
     <string name="done_text">Done</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="giveNewShoppingListName">Give new shopping list a name</string>
@@ -18,4 +18,7 @@
     <string name="itemToBuyName_text">Item to buy name</string>
     <string name="button_to_add_new_shopping_list">Button to add new shopping list</string>
     <string name="button_to_add_new_items_to_shopping_list">Button to add new items to shopping list</string>
+    <string name="completeDialogTitle">Complete shopping list</string>
+    <string name="completeDialogMessage1">Are you sure you want to complete this shopping list?</string>
+    <string name="completeDialogMessage2">If yes, it will be moved to COMPLETED</string>
 </resources>
