@@ -5,3 +5,5 @@ Technologies, Dagger Hilt, Room, Kotlin
 App allows to add shopping list. To these lists You can add items with quantities.
 You can see via TabbedLayout All presend and completed shopping lists.
 Lists and item can be deleted through swipe LEFT|RIGHT than UNDO if wrong decission was made.
+User have possibility to edit each item from shopping list.
+Completing list causes deletion chained items from database.
