@@ -19,4 +19,7 @@ interface ShoppingItemsListDao {
 
     @Query("SELECT * FROM shopping_list_items WHERE shoppingListId = :chosenShoppingListId ORDER BY id DESC")
     fun getShoppingItemListForShoppingListId(chosenShoppingListId: Int): Flow<List<ShoppingListItemModel>>
+
+    @Query("DELETE FROM shopping_list_items WHERE shoppingListId = :chosenShoppingListId")
+    suspend fun deleteShoppingListItemForCompletedShoppingListId(chosenShoppingListId: Int)
 }

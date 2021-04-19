@@ -174,6 +174,7 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
         super.onCreateOptionsMenu(menu, inflater)
     }
 
+    //maintaining click from upper menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.done_menu_button -> {
@@ -193,6 +194,7 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
         buildAddNewShoppingListItemAlertDialog(shoppingListItemModel)
     }
 
+    //dialog if user is shure tu complete
     private fun buildCompleteListAlertDialog(){
         val title = getString(R.string.completeDialogTitle)
         val message = getString(R.string.completeDialogMessage1) + "\n" + getString(R.string.completeDialogMessage2)

@@ -24,4 +24,7 @@ class ShoppingListItemListRepository @Inject constructor(
 
     fun getShoppingItemListForShoppingListId(id: Int): LiveData<List<ShoppingListItemModel>> =
         shoppingItemsListDao.getShoppingItemListForShoppingListId(id).asLiveData()
+
+    suspend fun deleteShoppingListItemForCompletedShoppingListId(id: Int) =
+        shoppingItemsListDao.deleteShoppingListItemForCompletedShoppingListId(id)
 }

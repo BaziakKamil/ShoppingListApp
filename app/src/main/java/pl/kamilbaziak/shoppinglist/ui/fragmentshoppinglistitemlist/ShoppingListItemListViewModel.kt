@@ -39,7 +39,9 @@ class ShoppingListItemListViewModel @Inject constructor(
 
     fun setShoppingListAsCompleted() {
         viewModelScope.launch {
+            //updateing list and deleteing chaindeg shopping list items
             shoppingListRepository.update(shoppingList.copy(completed = true))
+            shoppingListItemListRepository.deleteShoppingListItemForCompletedShoppingListId(shoppingList.id)
             shoppingListItemListChannel.send(ShoppingListItemListEvent.ShoppingListIsCompletedCloseDialog)
         }
     }
