@@ -9,7 +9,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.ShoppingListApp">
+        android:theme="@style/Theme.AppCompat.Light.DarkActionBar">
         <activity
             android:name="pl.kamilbaziak.shoppinglist.activities.MainActivity"
             android:windowSoftInputMode="adjustResize">

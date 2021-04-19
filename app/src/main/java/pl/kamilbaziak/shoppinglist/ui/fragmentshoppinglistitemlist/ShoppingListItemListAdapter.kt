@@ -38,8 +38,16 @@ class ShoppingListItemListAdapter(
                 checkboxCompleted.setOnClickListener {
                     val position = adapterPosition
                     if (position != RecyclerView.NO_POSITION) {
-                        val task = getItem(position)
-                        listener.onCheckBoxClick(task, checkboxCompleted.isChecked)
+                        val shoppingListItemModel = getItem(position)
+                        listener.onCheckBoxClick(shoppingListItemModel, checkboxCompleted.isChecked)
+                    }
+                }
+                root.setOnClickListener {
+                    val position = adapterPosition // getting position
+                    if(position != RecyclerView.NO_POSITION)
+                    {
+                        val shoppingListItemModel = getItem(position)
+                        listener.onItemClicked(shoppingListItemModel)
                     }
                 }
             }
@@ -61,6 +69,7 @@ class ShoppingListItemListAdapter(
 
     interface OnItemClickListener {
         fun onCheckBoxClick(shoppingListItemModel: ShoppingListItemModel, isChecked: Boolean)
+        fun onItemClicked(shoppingListItemModel: ShoppingListItemModel)
     }
 
     class DiffCallback : DiffUtil.ItemCallback<ShoppingListItemModel>() {

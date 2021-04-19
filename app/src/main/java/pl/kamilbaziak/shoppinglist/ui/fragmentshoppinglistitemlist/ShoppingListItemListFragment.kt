@@ -52,7 +52,7 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
             }
 
             fabAddNewShoppingItem.setOnClickListener {
-                buildAddNewShoppingListItemAlertDialog()
+                buildAddNewShoppingListItemAlertDialog(null)
             }
 
             //swipe for deletion
@@ -121,7 +121,7 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
     }
 
     //build dialog
-    private fun buildAddNewShoppingListItemAlertDialog(){
+    private fun buildAddNewShoppingListItemAlertDialog(shoppingListItemModel: ShoppingListItemModel?){
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
         builder.setTitle(getString(R.string.giveNewShoppingListName))
 
@@ -140,7 +140,11 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
         val quantityEditText = EditText(requireContext())
         quantityEditText.hint = getString(R.string.enterQuantity)
         quantityEditText.inputType = InputType.TYPE_CLASS_NUMBER
-        //TODO add padding and margin to views
+
+        if(shoppingListItemModel != null){
+            nameEditText.setText(shoppingListItemModel.name)
+            quantityEditText.setText(shoppingListItemModel.quantity.toString())
+        }
 
         quantityLayout.addView(quantityTextView)
         quantityLayout.addView(quantityEditText)
@@ -152,7 +156,10 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
         builder.setPositiveButton(
             getString(R.string.ok_text),
             DialogInterface.OnClickListener { dialog, which ->
-                viewModel.addNewItem(nameEditText.text.toString(), quantityEditText.text.toString())
+                if(shoppingListItemModel == null)
+                    viewModel.validateQuantity(null, nameEditText.text.toString(), quantityEditText.text.toString())
+                else
+                    viewModel.validateQuantity(shoppingListItemModel, nameEditText.text.toString(), quantityEditText.text.toString())
                 dialog.dismiss()
             })
         builder.setNegativeButton(
@@ -180,6 +187,10 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
 
     override fun onCheckBoxClick(shoppingListItemModel: ShoppingListItemModel, isChecked: Boolean) {
         viewModel.onShoppingItemCheckedChanged(shoppingListItemModel, isChecked)
+    }
+
+    override fun onItemClicked(shoppingListItemModel: ShoppingListItemModel) {
+        buildAddNewShoppingListItemAlertDialog(shoppingListItemModel)
     }
 
     private fun buildCompleteListAlertDialog(){

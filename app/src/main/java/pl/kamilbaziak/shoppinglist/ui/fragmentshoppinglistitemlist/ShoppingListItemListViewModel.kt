@@ -1,20 +1,14 @@
 package pl.kamilbaziak.shoppinglist.ui.fragmentshoppinglistitemlist
 
 import androidx.lifecycle.*
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import pl.kamilbaziak.shoppinglist.data.ShoppingItemsListDao
 import pl.kamilbaziak.shoppinglist.data.ShoppingListItemListRepository
 import pl.kamilbaziak.shoppinglist.data.ShoppingListRepository
 import pl.kamilbaziak.shoppinglist.model.ShoppingListItemModel
 import pl.kamilbaziak.shoppinglist.model.ShoppingListModel
-import pl.kamilbaziak.shoppinglist.ui.fragmentaddnewshoppinglistdialog.AddNewShoppingListDialogViewModel
-import pl.kamilbaziak.shoppinglist.ui.fragmentshoppinglist.ShoppingListViewModel
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -43,7 +37,7 @@ class ShoppingListItemListViewModel @Inject constructor(
         shoppingListItemListRepository.update(shoppingListItemModel.copy(completed = isChecked))
     }
 
-    fun setShoppingListAsCompleted(){
+    fun setShoppingListAsCompleted() {
         viewModelScope.launch {
             shoppingListRepository.update(shoppingList.copy(completed = true))
             shoppingListItemListChannel.send(ShoppingListItemListEvent.ShoppingListIsCompletedCloseDialog)
@@ -65,27 +59,70 @@ class ShoppingListItemListViewModel @Inject constructor(
         shoppingListItemListRepository.insert(shoppingListItemModel)
     }
 
-    fun addNewItem(name: String, quantity: String) {
-        viewModelScope.launch {
-            var innerName = name
-            var innerQuantity = quantity
-            var quantityInt: Int
+    fun validateQuantity(
+        shoppingListItemModel: ShoppingListItemModel?,
+        name: String,
+        quantity: String
+    ) {
+        var innerName = name
+        var innerQuantity = quantity
+        var quantityInt: Int
 
-            if (innerName.isEmpty())
-                innerName = "Brak nazwy"
+        if (innerName.isEmpty())
+            innerName = "Brak nazwy"
 
-            if (innerQuantity.isEmpty())
-                innerQuantity = "0"
+        if (innerQuantity.isEmpty())
+            innerQuantity = "0"
 
-            //converting string to int
-            try {
-                quantityInt = innerQuantity.toInt()
-            } catch (e: Exception) {
-                e.printStackTrace()
-                shoppingListItemListChannel.send(ShoppingListItemListEvent.ErrorChangingQuantityToInt(quantity))
-                return@launch
+        //converting string to int
+        try {
+            quantityInt = innerQuantity.toInt()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            viewModelScope.launch {
+                shoppingListItemListChannel.send(
+                    ShoppingListItemListEvent.ErrorChangingQuantityToInt(
+                        quantity
+                    )
+                )
             }
-            shoppingListItemListRepository.insert(ShoppingListItemModel(0, shoppingList.id, name, false, quantityInt))
+            return
+        }
+
+        if (shoppingListItemModel == null)
+            addNewItem(name, quantityInt)
+        else
+            updateItem(shoppingListItemModel, name, quantityInt)
+    }
+
+    private fun addNewItem(name: String, quantity: Int) {
+        viewModelScope.launch {
+            shoppingListItemListRepository.insert(
+                ShoppingListItemModel(
+                    0,
+                    shoppingList.id,
+                    name,
+                    false,
+                    quantity
+                )
+            )
+        }
+    }
+
+    private fun updateItem(
+        shoppingListItemModel: ShoppingListItemModel,
+        name: String,
+        quantity: Int
+    ) {
+        viewModelScope.launch {
+            shoppingListItemListRepository.update(
+                ShoppingListItemModel(
+                    id = shoppingListItemModel.id,
+                    shoppingListId = shoppingList.id,
+                    name = name,
+                    quantity = quantity
+                )
+            )
         }
     }
 
