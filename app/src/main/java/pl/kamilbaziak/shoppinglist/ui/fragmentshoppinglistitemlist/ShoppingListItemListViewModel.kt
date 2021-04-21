@@ -1,14 +1,20 @@
 package pl.kamilbaziak.shoppinglist.ui.fragmentshoppinglistitemlist
 
 import androidx.lifecycle.*
+import dagger.assisted.Assisted
+import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import pl.kamilbaziak.shoppinglist.data.ShoppingItemsListDao
 import pl.kamilbaziak.shoppinglist.data.ShoppingListItemListRepository
 import pl.kamilbaziak.shoppinglist.data.ShoppingListRepository
 import pl.kamilbaziak.shoppinglist.model.ShoppingListItemModel
 import pl.kamilbaziak.shoppinglist.model.ShoppingListModel
+import pl.kamilbaziak.shoppinglist.ui.fragmentaddnewshoppinglistdialog.AddNewShoppingListDialogViewModel
+import pl.kamilbaziak.shoppinglist.ui.fragmentshoppinglist.ShoppingListViewModel
 import java.lang.Exception
 import javax.inject.Inject
 
@@ -37,11 +43,21 @@ class ShoppingListItemListViewModel @Inject constructor(
         shoppingListItemListRepository.update(shoppingListItemModel.copy(completed = isChecked))
     }
 
-    fun setShoppingListAsCompleted() {
+    fun onShoppingListItemClicked(shoppingListItemModel: ShoppingListItemModel){
         viewModelScope.launch {
-            //updateing list and deleteing chaindeg shopping list items
+            shoppingListItemListChannel.send(ShoppingListItemListEvent.NavigateToEditShoppingListItem(shoppingList, shoppingListItemModel))
+        }
+    }
+
+    fun onAddNewItemButtonClicked() {
+        viewModelScope.launch {
+            shoppingListItemListChannel.send(ShoppingListItemListEvent.NavigateToAddNewShoppingListItem(shoppingList))
+        }
+    }
+
+    fun setShoppingListAsCompleted(){
+        viewModelScope.launch {
             shoppingListRepository.update(shoppingList.copy(completed = true))
-            shoppingListItemListRepository.deleteShoppingListItemForCompletedShoppingListId(shoppingList.id)
             shoppingListItemListChannel.send(ShoppingListItemListEvent.ShoppingListIsCompletedCloseDialog)
         }
     }
@@ -61,73 +77,6 @@ class ShoppingListItemListViewModel @Inject constructor(
         shoppingListItemListRepository.insert(shoppingListItemModel)
     }
 
-    fun validateQuantity(
-        shoppingListItemModel: ShoppingListItemModel?,
-        name: String,
-        quantity: String
-    ) {
-        var innerName = name
-        var innerQuantity = quantity
-        var quantityInt: Int
-
-        if (innerName.isEmpty())
-            innerName = "Brak nazwy"
-
-        if (innerQuantity.isEmpty())
-            innerQuantity = "0"
-
-        //converting string to int
-        try {
-            quantityInt = innerQuantity.toInt()
-        } catch (e: Exception) {
-            e.printStackTrace()
-            viewModelScope.launch {
-                shoppingListItemListChannel.send(
-                    ShoppingListItemListEvent.ErrorChangingQuantityToInt(
-                        quantity
-                    )
-                )
-            }
-            return
-        }
-
-        if (shoppingListItemModel == null)
-            addNewItem(name, quantityInt)
-        else
-            updateItem(shoppingListItemModel, name, quantityInt)
-    }
-
-    private fun addNewItem(name: String, quantity: Int) {
-        viewModelScope.launch {
-            shoppingListItemListRepository.insert(
-                ShoppingListItemModel(
-                    0,
-                    shoppingList.id,
-                    name,
-                    false,
-                    quantity
-                )
-            )
-        }
-    }
-
-    private fun updateItem(
-        shoppingListItemModel: ShoppingListItemModel,
-        name: String,
-        quantity: Int
-    ) {
-        viewModelScope.launch {
-            shoppingListItemListRepository.update(
-                ShoppingListItemModel(
-                    id = shoppingListItemModel.id,
-                    shoppingListId = shoppingList.id,
-                    name = name,
-                    quantity = quantity
-                )
-            )
-        }
-    }
-
     //for "communication" with fragment purposes
     sealed class ShoppingListItemListEvent {
         data class ShowChangeMessage(val shoppingListItemModel: ShoppingListItemModel) :
@@ -139,5 +88,11 @@ class ShoppingListItemListViewModel @Inject constructor(
         object ShoppingListIsCompletedCloseDialog : ShoppingListItemListEvent()
 
         data class ErrorChangingQuantityToInt(val text: String) : ShoppingListItemListEvent()
+
+        data class NavigateToEditShoppingListItem(val shoppingListModel: ShoppingListModel, val shoppingListItemModel: ShoppingListItemModel) :
+            ShoppingListItemListEvent()
+
+        data class NavigateToAddNewShoppingListItem(val shoppingListModel: ShoppingListModel) :
+            ShoppingListItemListEvent()
     }
 }

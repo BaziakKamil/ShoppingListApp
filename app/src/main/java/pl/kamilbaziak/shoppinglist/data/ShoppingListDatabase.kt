@@ -16,8 +16,6 @@ abstract class ShoppingListDatabase: RoomDatabase()
 {
     abstract fun shoppingListDao(): ShoppingListDao
     abstract fun shoppingItemListDao(): ShoppingItemsListDao
-    val shoppingListRepository = ShoppingListRepository(shoppingListDao())
-    val shoppingItemsListRepository = ShoppingListItemListRepository(shoppingItemListDao())
 
     //when app launches, dummy content will be available
     class Callback @Inject constructor(
@@ -29,8 +27,8 @@ abstract class ShoppingListDatabase: RoomDatabase()
         {
             super.onCreate(db)
             //declaring two dao's
-            val shoppingListRepository = database.get().shoppingListRepository
-            val shoppingItemsListRepository = database.get().shoppingItemsListRepository
+            val shoppingListDao = database.get().shoppingListDao()
+            val shoppingListItemDao = database.get().shoppingItemListDao()
 
             applicaitionScope.launch{
                 //adding three shopping lists with two item in each
@@ -42,9 +40,9 @@ abstract class ShoppingListDatabase: RoomDatabase()
                 //adding dummy content to database
                 for (shoppingList in list)
                 {
-                    shoppingListRepository.insert(shoppingList)
-                    shoppingItemsListRepository.insert(ShoppingListItemModel(0, shoppingList.id, "First Shopping list item for " + shoppingList.name, false))
-                    shoppingItemsListRepository.insert(ShoppingListItemModel(1, shoppingList.id, "Second Shopping list item for " + shoppingList.name, false))
+                    shoppingListDao.insert(shoppingList)
+                    shoppingListItemDao.insert(ShoppingListItemModel(0, shoppingList.id, "First Shopping list item for " + shoppingList.name, false))
+                    shoppingListItemDao.insert(ShoppingListItemModel(1, shoppingList.id, "Second Shopping list item for " + shoppingList.name, false))
                 }
             }
         }

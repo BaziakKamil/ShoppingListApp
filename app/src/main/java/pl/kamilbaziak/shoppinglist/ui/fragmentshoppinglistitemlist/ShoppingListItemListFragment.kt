@@ -52,7 +52,7 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
             }
 
             fabAddNewShoppingItem.setOnClickListener {
-                buildAddNewShoppingListItemAlertDialog(null)
+                viewModel.onAddNewItemButtonClicked()
             }
 
             //swipe for deletion
@@ -115,58 +115,19 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
                             Snackbar.LENGTH_LONG
                         ).show()
                     }
+
+                    is ShoppingListItemListViewModel.ShoppingListItemListEvent.NavigateToEditShoppingListItem -> {
+                        val action = ShoppingListItemListFragmentDirections.actionFragmentShoppingItemsListToAddEditNewShoppingListDialogFragment(event.shoppingListModel, event.shoppingListItemModel)
+                        findNavController().navigate(action)
+                    }
+
+                    is ShoppingListItemListViewModel.ShoppingListItemListEvent.NavigateToAddNewShoppingListItem -> {
+                        val action = ShoppingListItemListFragmentDirections.actionFragmentShoppingItemsListToAddEditNewShoppingListDialogFragment(event.shoppingListModel, null)
+                        findNavController().navigate(action)
+                    }
                 }
             }
         }
-    }
-
-    //build dialog
-    private fun buildAddNewShoppingListItemAlertDialog(shoppingListItemModel: ShoppingListItemModel?){
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder.setTitle(getString(R.string.giveNewShoppingListName))
-
-        val layout = LinearLayout(requireContext())
-        val quantityLayout = LinearLayout(requireContext())
-
-        layout.orientation = LinearLayout.VERTICAL
-        quantityLayout.orientation = LinearLayout.HORIZONTAL
-
-        val nameEditText = EditText(requireContext())
-        nameEditText.hint = getString(R.string.enterItemName)
-
-        val quantityTextView = TextView(requireContext())
-        quantityTextView.text = getString(R.string.quantity)
-
-        val quantityEditText = EditText(requireContext())
-        quantityEditText.hint = getString(R.string.enterQuantity)
-        quantityEditText.inputType = InputType.TYPE_CLASS_NUMBER
-
-        if(shoppingListItemModel != null){
-            nameEditText.setText(shoppingListItemModel.name)
-            quantityEditText.setText(shoppingListItemModel.quantity.toString())
-        }
-
-        quantityLayout.addView(quantityTextView)
-        quantityLayout.addView(quantityEditText)
-
-        layout.addView(nameEditText)
-        layout.addView(quantityLayout)
-
-        builder.setView(layout)
-        builder.setPositiveButton(
-            getString(R.string.ok_text),
-            DialogInterface.OnClickListener { dialog, which ->
-                if(shoppingListItemModel == null)
-                    viewModel.validateQuantity(null, nameEditText.text.toString(), quantityEditText.text.toString())
-                else
-                    viewModel.validateQuantity(shoppingListItemModel, nameEditText.text.toString(), quantityEditText.text.toString())
-                dialog.dismiss()
-            })
-        builder.setNegativeButton(
-            getString(R.string.cancel_text),
-            DialogInterface.OnClickListener { dialog, which -> dialog.dismiss() })
-
-        builder.show()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -174,7 +135,6 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    //maintaining click from upper menu
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when(item.itemId){
             R.id.done_menu_button -> {
@@ -191,13 +151,12 @@ class ShoppingListItemListFragment : Fragment(R.layout.fragment_shopping_list_it
     }
 
     override fun onItemClicked(shoppingListItemModel: ShoppingListItemModel) {
-        buildAddNewShoppingListItemAlertDialog(shoppingListItemModel)
+        viewModel.onShoppingListItemClicked(shoppingListItemModel)
     }
 
-    //dialog if user is shure tu complete
     private fun buildCompleteListAlertDialog(){
         val title = getString(R.string.completeDialogTitle)
-        val message = getString(R.string.completeDialogMessage1) + "\n" + getString(R.string.completeDialogMessage2)
+        val message = getString(R.string.completeDialogMessage1)
         val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
        builder
             .setTitle(title)

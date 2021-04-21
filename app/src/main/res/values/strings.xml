@@ -19,6 +19,5 @@
     <string name="button_to_add_new_shopping_list">Button to add new shopping list</string>
     <string name="button_to_add_new_items_to_shopping_list">Button to add new items to shopping list</string>
     <string name="completeDialogTitle">Complete shopping list</string>
-    <string name="completeDialogMessage1">Are you sure you want to complete this shopping list?</string>
-    <string name="completeDialogMessage2">If yes, it will be moved to COMPLETED</string>
+    <string name="completeDialogMessage1">Are you sure you want to complete this shopping list?\nIf yes, it will be moved to COMPLETED</string>
 </resources>

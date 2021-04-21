@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_fragmentShoppingItemsList_to_mainTabbedFragment"
             app:destination="@id/mainTabbedFragment" />
+        <action
+            android:id="@+id/action_fragmentShoppingItemsList_to_addEditNewShoppingListDialogFragment"
+            app:destination="@id/addEditNewShoppingListDialogFragment" />
     </fragment>
     <fragment
         android:id="@+id/mainTabbedFragment"
@@ -29,5 +32,18 @@
             android:id="@+id/action_mainTabbedFragment_to_fragmentShoppingItemsList2"
             app:destination="@id/fragmentShoppingItemsList" />
     </fragment>
+    <dialog
+        android:id="@+id/addEditNewShoppingListDialogFragment"
+        android:name="pl.kamilbaziak.shoppinglist.ui.fragmentaddnewshoppinglistdialog.AddEditNewShoppingListDialogFragment"
+        android:label="add_edit_shopping_list_item_fragment"
+        tools:layout="@layout/add_edit_shopping_list_item_fragment" >
+        <argument
+            android:name="shoppingListModel"
+            app:argType="pl.kamilbaziak.shoppinglist.model.ShoppingListModel" />
+        <argument
+            android:name="shoppingListItemModel"
+            app:argType="pl.kamilbaziak.shoppinglist.model.ShoppingListItemModel"
+            app:nullable="true" />
+    </dialog>
 
 </navigation>

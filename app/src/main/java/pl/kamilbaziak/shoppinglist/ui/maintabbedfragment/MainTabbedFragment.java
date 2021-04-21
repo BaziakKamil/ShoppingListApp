@@ -44,7 +44,8 @@ public class MainTabbedFragment extends Fragment {
         tabLayout = view.findViewById(R.id.tab_layout);
         viewPager = view.findViewById(R.id.view_pager);
 
-        FragmentManager fm = requireActivity().getSupportFragmentManager();
+        //changed to getCHildFragmentManager because activity was destroyed and it's not smart to pass destroyed app's fragmentManager
+        FragmentManager fm = getChildFragmentManager();
         adapter = new ViewPagerAdapter(fm, getLifecycle());
         viewPager.setAdapter(adapter);
 

@@ -1,0 +1,8 @@
+1.0.0:
+    - added all needed features and main functions
+    - added edit option to shopping list item
+    TODO = "add edit to shopping list"
+1.0.1: (After review bugs and improvements)
+    - app crashing by rotation bug fixed (getChildFragmentManager)
+    - Database do not know about repos, DI makes it
+    - revert Dialog deletion
